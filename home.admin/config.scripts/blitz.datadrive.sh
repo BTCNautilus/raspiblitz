@@ -156,9 +156,11 @@ if [ "$1" = "status" ]; then
 	fi
 		  
         if [ "$testdevice" != "$OSParentDisk" ] && [ "$testdevice" != "$bootParentDisk" ];then
-          sizeDataPartition=${testsize}
-          hddDataPartition="${testpartition}"
-          hdd="${testdevice}"
+          if [ ${testsize} -gt ${sizeDataPartition} ]; then
+            sizeDataPartition=${testsize}
+            hddDataPartition="${testpartition}"
+            hdd="${testdevice}"
+          fi
         fi
       elif [ $testpartitioncount -gt 0 ]; then
         # if a partition was found - make sure to skip the OS and boot partitions
