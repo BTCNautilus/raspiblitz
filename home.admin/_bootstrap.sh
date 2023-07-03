@@ -435,9 +435,9 @@ if [ ${isMounted} -eq 0 ]; then
 
   # temp mount the HDD
   echo "Temp mounting (1) data drive" >> $logFile
-  source <(/home/admin/config.scripts/blitz.datadrive.sh tempmount)
+  source <(sudo /home/admin/config.scripts/blitz.datadrive.sh tempmount $hddCandidate)
   echo "Temp mounting (1) result: ${isMounted}" >> $logFile
-
+  source <(sudo /home/admin/config.scripts/blitz.datadrive.sh status)
   # write data needed for setup process into raspiblitz.info
   /home/admin/_cache.sh set hddCandidate "${hddCandidate}"
   /home/admin/_cache.sh set hddGigaBytes "${hddGigaBytes}"
@@ -598,7 +598,7 @@ if [ ${isMounted} -eq 0 ]; then
 
     # delete everything but blockchain
     echo "Deleting everything on HDD/SSD while keeping blockchain ..." >> ${logFile}
-    sudo /home/admin/config.scripts/blitz.datadrive.sh tempmount 1>/dev/null 2>/dev/null
+    sudo /home/admin/config.scripts/blitz.datadrive.sh tempmount $hddCandidate 1>/dev/null 2>/dev/null
     sudo /home/admin/config.scripts/blitz.datadrive.sh clean all -keepblockchain >> ${logFile}
     if [ "${error}" != "" ]; then
        echo "CLEANING HDD FAILED:" >> ${logFile}
@@ -650,7 +650,7 @@ if [ ${isMounted} -eq 0 ]; then
   # make sure HDD is mounted (could be freshly formatted by user on last loop)
   source <(/home/admin/config.scripts/blitz.datadrive.sh status)
   echo "Temp mounting (2) data drive (hddFormat='${hddFormat}')" >> ${logFile}
-  source <(sudo /home/admin/config.scripts/blitz.datadrive.sh tempmount)
+  source <(sudo /home/admin/config.scripts/blitz.datadrive.sh tempmount $hddCandidate)
   echo "Temp mounting (2) result: ${isMounted}" >> ${logFile}
 
   # check that HDD was temp mounted
